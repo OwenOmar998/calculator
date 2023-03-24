@@ -1,27 +1,36 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div id="app">
+    <CalculatorNormal v-if="calcResult.orientation === 'portrait'" />
+    <CalculatorScientific v-if="calcResult.orientation === 'landscape'" />
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+import { useCalcResult } from "../stores/CalcResult";
+import { defineComponent } from "vue";
+import CalculatorNormal from "./components/CalculatorNormal.vue";
+import CalculatorScientific from "./components/CalculatorScientific.vue";
 
 export default defineComponent({
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+  setup() {
+    const calcResult = useCalcResult();
+    window.addEventListener("orientationchange", calcResult.detectOrientation);
+
+    return { calcResult };
+  },
+  name: "App",
+  components: { CalculatorNormal, CalculatorScientific },
 });
 </script>
 
 <style>
+body {
+  background-color: #222;
+  margin: 0;
+  padding: 0;
+}
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  font-family: "Avenir", Arial, Helvetica;
+  font-size: 1rem;
 }
 </style>
